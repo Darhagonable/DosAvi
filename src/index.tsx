@@ -1,4 +1,10 @@
 import { registerRootComponent } from "expo";
 import App from "./App";
 
-registerRootComponent(App);
+function AppWrapper() {
+  return (
+    <App/>
+  );
+}
+
+registerRootComponent(AppWrapper);

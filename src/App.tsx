@@ -1,29 +1,27 @@
-import { StyleSheet, Text, View, ScrollView } from "react-native";
-import { StatusBar } from "expo-status-bar";
+import { StyleSheet, ScrollView, SafeAreaView, StatusBar } from "react-native";
 import Footer from "components/Footer";
 import ListItem from "components/ListItem";
 import { fakeData } from "fakeData";
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <StatusBar style="auto"/>
-      <ScrollView>
-        <Text>Open up App.tsx to start working on your app!</Text>
+    <SafeAreaView style={styles.container}>
+      <StatusBar/>
+      <ScrollView contentContainerStyle={styles.list}>
         {fakeData.map(medication => (
           <ListItem key={medication.id} medication={medication}/>
         ))}
       </ScrollView>
       <Footer/>
-    </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center"
+    flex: 1
+  },
+  list: {
+    padding: 24
   }
 });

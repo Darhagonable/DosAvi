@@ -1,3 +1,4 @@
+import { useNavigation } from "@react-navigation/native";
 import * as React from "react";
 import { StyleSheet } from "react-native";
 import { Card, Title, Paragraph, ProgressBar } from "react-native-paper";
@@ -7,8 +8,10 @@ interface Props {
 }
 
 export default function ListItem({medication}: Props) {
+  const navigation = useNavigation();
+
   return (
-    <Card style={styles.card} elevation={3}>
+    <Card style={styles.card} elevation={3} onPress={() => navigation.navigate("Details")}>
       <Card.Content>
         <Title>{medication.name}</Title>
         <Paragraph>{medication.affliction} • {medication.days}</Paragraph>

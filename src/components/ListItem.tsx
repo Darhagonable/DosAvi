@@ -1,37 +1,30 @@
-import { Text, View, StyleSheet } from "react-native";
-import { Shadow } from "react-native-shadow-2";
+import * as React from "react";
+import { StyleSheet } from "react-native";
+import { Card, Title, Paragraph, ProgressBar } from "react-native-paper";
 
 interface Props {
   medication: Medication
 }
 
-export default function ListItem({ medication }: Props) {
+export default function ListItem({medication}: Props) {
   return (
-    <Shadow distance={5} style={styles.card} stretch>
-      <View style={styles.content}>
-        <View style={styles.header}>
-          <Text>{medication.name}</Text>
-        </View>
-      </View>
-    </Shadow>
+    <Card style={styles.card} elevation={3}>
+      <Card.Content>
+        <Title>{medication.name}</Title>
+        <Paragraph>{medication.affliction} • {medication.days}</Paragraph>
+      </Card.Content>
+      <ProgressBar progress={0.5} style={styles.progressbar}/>
+    </Card>
   );
 }
 
+
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: "white",
-    borderRadius: 8,
-    color: "#212121",
-    fontWeight: 500,
-    marginBottom: 24
+    marginBottom: 24,
+    overflow: "hidden"
   },
-  content: {
-    display: "flex",
-    flexDirection: "column"
-  },
-  header: {
-    display: "flex",
-    flexDirection: "row",
-    padding: 10
+  progressbar: {
+    height: 10
   }
 });

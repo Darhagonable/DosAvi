@@ -1,13 +1,10 @@
 import { StyleSheet, SafeAreaView } from "react-native";
 import { StatusBar } from "expo-status-bar";
-import { useTheme } from "react-native-paper";
 import Router from "Router";
 
 export default function App() {
-  const theme = useTheme();
-
   return (
-    <SafeAreaView style={{...styles.container, backgroundColor: theme.colors.background}}>
+    <SafeAreaView style={styles.container}>
       <StatusBar style="auto"/>
       <Router/>
     </SafeAreaView>

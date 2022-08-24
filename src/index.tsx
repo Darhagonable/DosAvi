@@ -1,11 +1,25 @@
+import { ThemeContextConsumer, ThemeContextProvider } from "contexts/themeContext";
 import { registerRootComponent } from "expo";
-import { Provider as PaperProvider, DefaultTheme, DarkTheme } from "react-native-paper";
+import React from "react";
 import App from "./App";
 
-const theme = {
-  ...DefaultTheme,
+import {
+  NavigationContainer,
+  DarkTheme as NavigationDarkTheme,
+  DefaultTheme as NavigationDefaultTheme
+} from "@react-navigation/native";
+import {
+  DarkTheme as PaperDarkTheme,
+  DefaultTheme as PaperDefaultTheme,
+  Provider as PaperProvider
+} from "react-native-paper";
+import merge from "deepmerge";
+
+const CombinedDefaultTheme = merge(PaperDefaultTheme, NavigationDefaultTheme);
+const CombinedDarkTheme = merge(PaperDarkTheme, NavigationDarkTheme);
+
+const MyTheme = {
   colors: {
-    ...DefaultTheme.colors,
     primary: "#8ED9E2",
     secondary: "#E9878A"
   }
@@ -13,9 +27,21 @@ const theme = {
 
 function AppWrapper() {
   return (
-    <PaperProvider theme={theme}>
-      <App/>
-    </PaperProvider>
+    <ThemeContextProvider>
+      <ThemeContextConsumer>
+        {({ mode }) => {
+          const theme = merge(mode === "dark" ? CombinedDarkTheme : CombinedDefaultTheme, MyTheme);
+
+          return (
+            <PaperProvider theme={theme}>
+              <NavigationContainer theme={theme}>
+                <App/>
+              </NavigationContainer>
+            </PaperProvider>
+          );
+        }}
+      </ThemeContextConsumer>
+    </ThemeContextProvider>
   );
 }
 

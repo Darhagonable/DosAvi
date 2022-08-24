@@ -1,4 +1,4 @@
-import { useNavigation } from "@react-navigation/native";
+import { DrawerActions, useNavigation } from "@react-navigation/native";
 import * as React from "react";
 import { Appbar, useTheme } from "react-native-paper";
 
@@ -15,7 +15,7 @@ export default function Header({back}: {back?: boolean}) {
 
   return (
     <Appbar.Header style={{backgroundColor: colors.surface}}>
-      <Appbar.Action icon="menu" onPress={() => null}/>
+      <Appbar.Action icon="menu" onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}/>
       <Appbar.Content title="DosAvi" style={{alignItems: "center"}}/>
       <Appbar.Action icon="magnify" onPress={() => null}/>
     </Appbar.Header>

@@ -2,7 +2,7 @@ import { useAsyncStorage } from "@react-native-async-storage/async-storage";
 import React, { useContext, useState,useEffect } from "react";
 import { useColorScheme } from "react-native";
 
-type Mode = "light" | "dark";
+export type Mode = "light" | "dark";
 export type ThemeSetting = "light" | "dark" | "system-theme";
 
 interface IThemeContext {

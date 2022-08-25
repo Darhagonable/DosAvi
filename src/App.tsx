@@ -3,8 +3,8 @@ import { StyleSheet, SafeAreaView } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import Router from "Router";
 import { createDrawerNavigator } from "@react-navigation/drawer";
-import DrawerContent from "components/DrawerContent";
-import { useThemeContext } from "contexts/themeContext";
+import DrawerContent from "Components/DrawerContent";
+import { useThemeContext } from "Contexts/themeContext";
 
 export default function App() {
   const Drawer = createDrawerNavigator();

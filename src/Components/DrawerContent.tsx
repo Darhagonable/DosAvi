@@ -1,5 +1,5 @@
 import { DrawerContentScrollView } from "@react-navigation/drawer";
-import { useThemeContext,ThemeSetting } from "contexts/themeContext";
+import { useThemeContext,ThemeSetting } from "Contexts/themeContext";
 import { List, RadioButton } from "react-native-paper";
 
 export default function DrawerContent() {

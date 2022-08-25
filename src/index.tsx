@@ -1,4 +1,4 @@
-import { ThemeContextConsumer, ThemeContextProvider } from "contexts/themeContext";
+import { ThemeContextConsumer, ThemeContextProvider } from "Contexts/themeContext";
 import { registerRootComponent } from "expo";
 import React from "react";
 import App from "./App";

@@ -20,6 +20,15 @@ import merge from "deepmerge";
 const lightTheme = merge(PaperDefaultTheme, NavigationDefaultTheme);
 const darkTheme = merge(PaperDarkTheme, NavigationDarkTheme);
 
+declare global {
+  // eslint-disable-next-line @typescript-eslint/no-namespace
+  namespace ReactNativePaper {
+    interface ThemeColors {
+      secondary: string;
+    }
+  }
+}
+
 const myTheme = {
   colors: {
     primary: "#8ED9E2",

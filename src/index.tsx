@@ -17,31 +17,32 @@ import {
 } from "react-native-paper";
 import merge from "deepmerge";
 
-const CombinedDefaultTheme = merge(PaperDefaultTheme, NavigationDefaultTheme);
-const CombinedDarkTheme = merge(PaperDarkTheme, NavigationDarkTheme);
+const lightTheme = merge(PaperDefaultTheme, NavigationDefaultTheme);
+const darkTheme = merge(PaperDarkTheme, NavigationDarkTheme);
 
-const MyTheme = {
+const myTheme = {
   colors: {
     primary: "#8ED9E2",
     secondary: "#E9878A"
   }
 };
 
+const themes = {
+  light: merge(lightTheme, myTheme),
+  dark: merge(darkTheme, myTheme)
+};
+
 function AppWrapper() {
   return (
     <ThemeContextProvider>
       <ThemeContextConsumer>
-        {({ mode }) => {
-          const theme = merge(mode === "dark" ? CombinedDarkTheme : CombinedDefaultTheme, MyTheme);
-
-          return (
-            <PaperProvider theme={theme}>
-              <NavigationContainer theme={theme}>
-                <App/>
-              </NavigationContainer>
-            </PaperProvider>
-          );
-        }}
+        {({ mode }) => (
+          <PaperProvider theme={themes[mode]}>
+            <NavigationContainer theme={themes[mode]}>
+              <App/>
+            </NavigationContainer>
+          </PaperProvider>
+        )}
       </ThemeContextConsumer>
     </ThemeContextProvider>
   );

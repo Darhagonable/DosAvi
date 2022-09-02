@@ -30,6 +30,7 @@ declare global {
 }
 
 const myTheme = {
+  roundness: 8,
   colors: {
     primary: "#8ED9E2",
     secondary: "#E9878A"

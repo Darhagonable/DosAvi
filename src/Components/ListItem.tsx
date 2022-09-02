@@ -16,7 +16,7 @@ export default function ListItem({medication}: Props) {
         < >
           <Card.Content>
             <Title>{medication.name}</Title>
-            <Paragraph>{medication.affliction} • {medication.days}</Paragraph>
+            <Paragraph>{medication.affliction} • {medication.daysCustom ?? medication.daysPreset}</Paragraph>
           </Card.Content>
           <ProgressBar progress={0.5} style={styles.progressbar}/>
         </>

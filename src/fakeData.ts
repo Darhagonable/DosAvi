@@ -3,15 +3,16 @@ export const fakeData: Medication[] = [
     id: "1",
     name: "Cytostatika",
     affliction: "Cancer",
-    days: ["Monday", "Friday"],
-    times: [new Date().getTime, new Date().getTime],
+    daysPreset: "custom",
+    daysCustom: ["Monday", "Friday"],
+    times: [{id: "1", hours: 13, minutes: 37}, {id: "1", hours: 2, minutes: 32}],
     misc: "YO YO"
   },
   {
     id: "2",
     name: "Cytostatika2",
     affliction: "Cancer2",
-    days: ["Monday", "Friday"],
-    times: [new Date().getTime, new Date().getTime]
+    daysPreset: "every-other-day",
+    times: [{id: "1", hours: 13, minutes: 37}, {id: "1", hours: 2, minutes: 32}]
   }
 ];

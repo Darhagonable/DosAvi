@@ -1,7 +1,8 @@
 import { useNavigation } from "@react-navigation/native";
-import * as React from "react";
-import { StyleSheet } from "react-native";
-import { Card, Title, Paragraph, ProgressBar, TouchableRipple } from "react-native-paper";
+import { Fragment } from "react";
+import { StyleSheet, View } from "react-native";
+import { Card, Title, Paragraph, ProgressBar, TouchableRipple, IconButton } from "react-native-paper";
+import displayTime from "Utils/displayTimes";
 
 interface Props {
   medication: Medication
@@ -16,7 +17,20 @@ export default function ListItem({medication}: Props) {
         < >
           <Card.Content>
             <Title>{medication.name}</Title>
-            <Paragraph>{medication.affliction} • {medication.daysCustom ?? medication.daysPreset}</Paragraph>
+            <Paragraph>Against {medication.affliction} • {medication.daysCustom ?? medication.daysPreset}</Paragraph>
+            <Paragraph>
+              {medication.times.map((timestamp, index) => (
+                <Fragment key={timestamp.id}>
+                  {displayTime(timestamp)}
+                  {index + 1 !== medication.times.length && " • "}
+                </Fragment>
+              ))}
+            </Paragraph>
+            {medication.misc && <Paragraph>{medication.misc}</Paragraph>}
+            <View style={{flexDirection: "row", alignItems: "center", marginLeft: 0, left: 0}}>
+              <IconButton size={30} icon="timer-outline" style={{marginHorizontal: -5}}/>
+              <Title>til next dosage</Title>
+            </View>
           </Card.Content>
           <ProgressBar progress={0.5} style={styles.progressbar}/>
         </>
@@ -28,10 +42,9 @@ export default function ListItem({medication}: Props) {
 
 const styles = StyleSheet.create({
   card: {
-    marginBottom: 24,
     overflow: "hidden"
   },
   progressbar: {
-    height: 10
+    height: 11
   }
 });

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Keyboard } from "react-native";
 import { TextInput } from "react-native-paper";
 import { TimePickerModal } from "react-native-paper-dates";
+import displayTime from "Utils/displayTimes";
 
 interface Props {
   time: Timestamp
@@ -20,12 +21,6 @@ export default function TimeInput({time, onChange, onRemove}: Props) {
   function removeTime() {
     onRemove(time);
     Keyboard.dismiss();
-  }
-
-  function displayTime(timestamp: Timestamp) {
-    const date = new Date();
-    date.setHours(timestamp.hours, timestamp.minutes);
-    return date.toLocaleTimeString([], {hour: "numeric", minute: "numeric"});
   }
 
   return (

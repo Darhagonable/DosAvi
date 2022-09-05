@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Keyboard } from "react-native";
 import { TextInput } from "react-native-paper";
 import { TimePickerModal } from "react-native-paper-dates";
+import generateId from "Utils/generateId";
 
 interface Props {
   onCreate: (newTimestamp: Timestamp) => void
@@ -15,17 +16,13 @@ export default function NewTimeInput({onCreate}: Props) {
     Keyboard.dismiss();
   }
 
-  function generateNewId() {
-    return (Math.random() + 1).toString(36).substring(2);
-  }
-
   return (
     < >
       <TimePickerModal
         visible={showTimePicker}
         onDismiss={() => setShowTimePicker(false)}
         onConfirm={(newTime) => {
-          onCreate({...newTime, id: generateNewId()});
+          onCreate({...newTime, id: generateId()});
           setShowTimePicker(false);
         }}
       />

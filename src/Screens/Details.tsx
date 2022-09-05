@@ -1,20 +1,28 @@
 import { useState } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { useRoute, useNavigation, RouteProp } from "@react-navigation/native";
 import Header from "Components/Header";
-import { Button, Card, TextInput, Title, ToggleButton, useTheme } from "react-native-paper";
+import { Avatar, Button, Card, TextInput, Title, ToggleButton, TouchableRipple, useTheme } from "react-native-paper";
 import DropDown from "react-native-paper-dropdown";
 import TimeInput from "Components/TimeInput";
 import NewTimeInput from "Components/NewTimeInput";
 import { GapContainer } from "Components/GapContainer";
+import { RootStackParamList } from "navigation";
+import { useItems } from "Contexts/ItemsContext";
 
 type Draft = Omit<Medication, "id">;
 
 const days: Array<Days> = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 
 export default function Details() {
+  const { params: { medication } = {} } = useRoute<RouteProp<RootStackParamList, "Details">>();
+  const navigation = useNavigation();
   const { colors, fonts } = useTheme();
+  const { createItem, updateItem, deleteItem } = useItems();
 
-  const [draft, setDraft] = useState<Draft>({
+  const isNew = !medication;
+
+  const [draft, setDraft] = useState<Draft>(medication ?? {
     name: "",
     affliction: "",
     daysPreset: "every-day",
@@ -40,7 +48,7 @@ export default function Details() {
           <Card.Content>
             <GapContainer gap={10}>
 
-              <Title>Add a new medication</Title>
+              <Title>{isNew ? "Add a new medication" : "Edit medication details"}</Title>
 
               <TextInput
                 label="Name"
@@ -133,10 +141,30 @@ export default function Details() {
             </GapContainer>
           </Card.Content>
           <Card.Actions style={{justifyContent: "flex-end"}}>
-            <Button onPress={() => console.log("Cancel")}>Cancel</Button>
-            <Button onPress={() => console.log("Create")}>Create</Button>
+            <Button onPress={navigation.goBack}>Cancel</Button>
+            <Button onPress={() => {
+              isNew ? createItem(draft) : updateItem({...draft, id: medication.id});
+              navigation.goBack();
+            }}>
+              {isNew ? "Create" : "Update"}
+            </Button>
           </Card.Actions>
         </Card>
+
+        {!isNew && (
+          <Card style={{marginTop: 24, overflow: "hidden"}}>
+            <TouchableRipple onPress={() => {
+              deleteItem(medication.id);
+              navigation.goBack();
+            }}>
+              <Card.Title
+                title="Remove medication"
+                titleStyle={{fontSize: 16}}
+                left={(props) => <Avatar.Icon {...props} icon="trash-can-outline" color={colors.surface} style={{backgroundColor: colors.secondary}}/>}
+              />
+            </TouchableRipple>
+          </Card>
+        )}
       </ScrollView>
     </>
   );

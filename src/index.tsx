@@ -16,6 +16,7 @@ import {
   Provider as PaperProvider
 } from "react-native-paper";
 import merge from "deepmerge";
+import { ItemsProvider } from "Contexts/ItemsContext";
 
 const lightTheme = merge(PaperDefaultTheme, NavigationDefaultTheme);
 const darkTheme = merge(PaperDarkTheme, NavigationDarkTheme);
@@ -49,7 +50,9 @@ function AppWrapper() {
         {({ mode }) => (
           <PaperProvider theme={themes[mode]}>
             <NavigationContainer theme={themes[mode]}>
-              <App/>
+              <ItemsProvider>
+                <App/>
+              </ItemsProvider>
             </NavigationContainer>
           </PaperProvider>
         )}

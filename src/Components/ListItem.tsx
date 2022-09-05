@@ -12,7 +12,7 @@ export default function ListItem({medication}: Props) {
 
   return (
     <Card style={styles.card} elevation={3}>
-      <TouchableRipple onPress={() => navigation.navigate("Details")}>
+      <TouchableRipple onPress={() => navigation.navigate("Details", {medication})}>
         < >
           <Card.Content>
             <Title>{medication.name}</Title>

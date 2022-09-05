@@ -74,7 +74,7 @@ export default function Details() {
                 showDropDown={() => setShowDropDown(true)}
                 onDismiss={() => setShowDropDown(false)}
                 visible={showDropDown}
-                setValue={(newOption: DaysPreset) => setDraft({...draft, daysPreset: newOption})}
+                setValue={(newOption: DaysPreset) => setDraft((draft) => ({...draft, daysPreset: newOption}))}
               />
 
               {draft.daysPreset === "custom" && (

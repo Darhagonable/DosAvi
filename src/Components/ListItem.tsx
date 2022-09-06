@@ -4,6 +4,14 @@ import { StyleSheet, View } from "react-native";
 import { Card, Title, Paragraph, ProgressBar, TouchableRipple, IconButton } from "react-native-paper";
 import displayTime from "Utils/displayTimes";
 
+const friendlyDaysPresets = {
+  "every-day": "Every day",
+  "every-other-day": "Every other day",
+  "workdays": "Workdays",
+  "weekends": "Weekends",
+  "custom": "Choose days"
+};
+
 interface Props {
   medication: Medication
 }
@@ -17,7 +25,7 @@ export default function ListItem({medication}: Props) {
         < >
           <Card.Content>
             <Title>{medication.name}</Title>
-            <Paragraph>Against {medication.affliction} • {medication.daysCustom ?? medication.daysPreset}</Paragraph>
+            <Paragraph>Against {medication.affliction} • {medication.daysCustom?.map(day => day.slice(0, 3)).join(", ") ?? friendlyDaysPresets[medication.daysPreset]}</Paragraph>
             <Paragraph>
               {medication.times.map((timestamp, index) => (
                 <Fragment key={timestamp.id}>

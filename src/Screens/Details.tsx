@@ -35,7 +35,7 @@ export default function Details() {
   const list: Array<{label: string, value: DaysPreset}> = [
     {label: "Every day", value: "every-day"},
     {label: "Every other day", value: "every-other-day"},
-    {label: "Weekdays", value: "weekdays"},
+    {label: "Workdays", value: "workdays"},
     {label: "Weekends", value: "weekends"},
     {label: "Choose days", value: "custom"}
   ];

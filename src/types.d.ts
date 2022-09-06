@@ -1,5 +1,5 @@
 type Days = "Monday" | "Tuesday" | "Wednesday" | "Thursday" | "Friday" | "Saturday" | "Sunday";
-type DaysPreset = "every-day" | "every-other-day" | "weekdays" | "weekends" | "custom";
+type DaysPreset = "every-day" | "every-other-day" | "workdays" | "weekends" | "custom";
 
 interface Timestamp {
   id: string

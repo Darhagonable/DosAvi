@@ -1,4 +1,4 @@
-import React from "react";
+import { useState } from "react";
 import { ScrollView, StyleSheet } from "react-native";
 import Header from "Components/Header";
 import Footer from "Components/Footer";
@@ -9,14 +9,20 @@ import { GapContainer } from "Components/GapContainer";
 
 export default function Home() {
   const { items: medications } = useItems();
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const filteredMedications = medications.filter(medication => (
+    medication.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    medication.affliction.toLowerCase().includes(searchQuery.toLowerCase())
+  ));
 
   return (
     < >
-      <Header/>
+      <Header searchQuery={searchQuery} setSearchQuery={setSearchQuery}/>
       <ScrollView contentContainerStyle={styles.list}>
         <GapContainer gap={20}>
           <Title style={{textAlign: "center"}}>Medications</Title>
-          {medications.map(medication => (
+          {filteredMedications.map(medication => (
             <ListItem key={medication.id} medication={medication}/>
           ))}
         </GapContainer>

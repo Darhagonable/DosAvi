@@ -42,7 +42,7 @@ export default function Details() {
 
   return (
     < >
-      <Header back/>
+      <Header hasBackButton title="Details"/>
       <ScrollView contentContainerStyle={styles.container}>
         <Card>
           <Card.Content>

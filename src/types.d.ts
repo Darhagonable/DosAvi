@@ -1,4 +1,4 @@
-type Days = "Monday" | "Tuesday" | "Wednesday" | "Thursday" | "Friday" | "Saturday" | "Sunday";
+type Day = "Monday" | "Tuesday" | "Wednesday" | "Thursday" | "Friday" | "Saturday" | "Sunday";
 type DaysPreset = "every-day" | "every-other-day" | "workdays" | "weekends" | "custom";
 
 interface Timestamp {
@@ -12,7 +12,8 @@ interface Medication {
   name: string
   affliction: string,
   daysPreset: DaysPreset
-  daysCustom?: Array<Days>
+  daysCustom?: Array<Day>
   times: Array<Timestamp>
   misc?: string
+  notificationIds: Array<string>
 }

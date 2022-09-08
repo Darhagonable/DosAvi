@@ -1,10 +1,11 @@
 import { useState, useEffect, createContext, useContext, useMemo, ReactNode } from "react";
 import { useAsyncStorage } from "@react-native-async-storage/async-storage";
 import generateId from "../Utils/generateId";
+import { scheduleNotifications, cancelNotifications } from "Utils/notifications";
 
 interface IItemsContext {
   items: Medication[];
-  createItem: (item: Omit<Medication, "id">) => void;
+  createItem: (item: Omit<Medication, "id" | "notificationIds">) => void;
   updateItem: (item: Medication) => void;
   deleteItem: (itemId: string) => void;
 }
@@ -42,18 +43,28 @@ export function ItemsProvider({children}: {children: ReactNode}) {
   }, []);
 
 
-  function createItem(item: Omit<Medication, "id">) {
-    writeToStorage([...itemsState, {...item, id: generateId()}]);
-  }
+  async function createItem(item: Omit<Medication, "id" | "notificationIds">) {
+    const notificationIds = await scheduleNotifications(item);
 
-  function updateItem(item: Medication) {
-    const currentIndex = itemsState.findIndex((stateItem) => stateItem.id === item.id);
-    const updatedItems: Array<Medication> = [...itemsState];
-    updatedItems[currentIndex] = item;
+    const updatedItems = [...itemsState, {...item, id: generateId(), notificationIds}];
     writeToStorage(updatedItems);
   }
 
-  function deleteItem(itemId: string) {
+  async function updateItem(item: Medication) {
+    await cancelNotifications(item.notificationIds);
+    const notificationIds = await scheduleNotifications(item);
+
+    const currentIndex = itemsState.findIndex((stateItem) => stateItem.id === item.id);
+    const updatedItems: Array<Medication> = [...itemsState];
+    updatedItems[currentIndex] = {...item, notificationIds};
+    writeToStorage(updatedItems);
+  }
+
+  async function deleteItem(itemId: string) {
+    const item = itemsState.find((stateItem) => stateItem.id === itemId);
+    if(!item) throw new Error("Failed to find item to cancel notifications for");
+    await cancelNotifications(item.notificationIds);
+
     const updatedItems: Array<Medication> = itemsState.filter((stateItem) => stateItem.id !== itemId);
     writeToStorage(updatedItems);
   }

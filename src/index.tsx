@@ -2,6 +2,7 @@ import { ThemeContextConsumer, ThemeContextProvider } from "Contexts/themeContex
 import { registerRootComponent } from "expo";
 import React from "react";
 import App from "./App";
+import * as Notifications from "expo-notifications";
 
 import "react-native-gesture-handler";
 
@@ -42,6 +43,14 @@ const themes = {
   light: merge(lightTheme, myTheme),
   dark: merge(darkTheme, myTheme)
 };
+
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: true,
+    shouldSetBadge: true
+  })
+});
 
 function AppWrapper() {
   return (

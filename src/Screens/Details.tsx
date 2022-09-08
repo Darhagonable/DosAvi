@@ -10,9 +10,9 @@ import { GapContainer } from "Components/GapContainer";
 import { RootStackParamList } from "navigation";
 import { useItems } from "Contexts/ItemsContext";
 
-type Draft = Omit<Medication, "id">;
+type Draft = Omit<Medication, "id" | "notificationIds">;
 
-const days: Array<Days> = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+const days: Array<Day> = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 
 export default function Details() {
   const { params: { medication } = {} } = useRoute<RouteProp<RootStackParamList, "Details">>();
@@ -143,7 +143,7 @@ export default function Details() {
           <Card.Actions style={{justifyContent: "flex-end"}}>
             <Button onPress={navigation.goBack}>Cancel</Button>
             <Button onPress={() => {
-              isNew ? createItem(draft) : updateItem({...draft, id: medication.id});
+              isNew ? createItem(draft) : updateItem({...draft, id: medication.id, notificationIds: medication.notificationIds});
               navigation.goBack();
             }}>
               {isNew ? "Create" : "Update"}

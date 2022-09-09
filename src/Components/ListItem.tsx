@@ -1,8 +1,9 @@
 import { useNavigation } from "@react-navigation/native";
-import { Fragment } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { StyleSheet, View } from "react-native";
-import { Card, Title, Paragraph, ProgressBar, TouchableRipple, IconButton } from "react-native-paper";
+import { Card, Title, Paragraph, ProgressBar, TouchableRipple, IconButton, Text, useTheme } from "react-native-paper";
 import displayTime from "Utils/displayTimes";
+import { getPreviousAndUpcommingScheduledNotificationDates } from "Utils/notifications";
 
 const friendlyDaysPresets = {
   "every-day": "Every day",
@@ -12,12 +13,44 @@ const friendlyDaysPresets = {
   "custom": "Choose days"
 };
 
+function countdownconvert(duration: number) {
+  const days = Math.floor(duration / (1000 * 60 * 60 * 24));
+  const hours = Math.floor((duration % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  const minutes = Math.floor((duration % (1000 * 60 * 60)) / (1000 * 60));
+  const seconds = Math.floor((duration % (1000 * 60)) / 1000);
+  if(days)
+    return `${days}d ${hours}h ${minutes}m ${seconds}s`;
+  if(hours)
+    return `${hours}h ${minutes}m ${seconds}s`;
+  if(minutes)
+    return `${minutes}m ${seconds}s`;
+  return `${seconds}s`;
+}
+
+interface IPreviousAndUpcommingDate {
+  upcommingDate?: number
+  previousDate?: number
+}
+
 interface Props {
   medication: Medication
 }
 
 export default function ListItem({medication}: Props) {
   const navigation = useNavigation();
+  const { fonts } = useTheme();
+
+  const [{previousDate, upcommingDate}, setLastAndUpcommingDate] = useState<IPreviousAndUpcommingDate>({});
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      getPreviousAndUpcommingScheduledNotificationDates(medication)
+        .then(date => setLastAndUpcommingDate(date));
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [medication]);
+
+  const durationTilNext = upcommingDate ? upcommingDate - new Date().getTime() : undefined;
 
   return (
     <Card style={styles.card} elevation={3}>
@@ -37,10 +70,10 @@ export default function ListItem({medication}: Props) {
             {medication.misc && <Paragraph>{medication.misc}</Paragraph>}
             <View style={{flexDirection: "row", alignItems: "center", marginLeft: 0, left: 0}}>
               <IconButton size={30} icon="timer-outline" style={{marginHorizontal: -5}}/>
-              <Title>til next dosage</Title>
+              <Text style={{...fonts.medium, fontSize: 15}}>{durationTilNext ? `${countdownconvert(durationTilNext)} til next dosage` : "loading..."}</Text>
             </View>
           </Card.Content>
-          <ProgressBar progress={0.5} style={styles.progressbar}/>
+          <ProgressBar progress={(previousDate && upcommingDate && durationTilNext) ? durationTilNext / (upcommingDate - previousDate) : undefined} style={styles.progressbar}/>
         </>
       </TouchableRipple>
     </Card>

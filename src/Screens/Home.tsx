@@ -27,7 +27,7 @@ export default function Home() {
           ))}
         </GapContainer>
       </ScrollView>
-      <Footer/>
+      <Footer hasAddButton/>
     </>
   );
 }

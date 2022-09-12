@@ -9,6 +9,7 @@ import NewTimeInput from "Components/NewTimeInput";
 import { GapContainer } from "Components/GapContainer";
 import { RootStackParamList } from "navigation";
 import { useItems } from "Contexts/ItemsContext";
+import Footer from "Components/Footer";
 
 type Draft = Omit<Medication, "id" | "notificationIds">;
 
@@ -194,6 +195,8 @@ export default function Details() {
           </Dialog.Actions>
         </Dialog>
       )}
+
+      <Footer/>
     </>
   );
 }

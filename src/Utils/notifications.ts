@@ -55,3 +55,5 @@ export async function getPreviousAndUpcommingScheduledNotificationDates(item: Me
     previousDate: previousDate !== -Infinity ? previousDate : undefined
   };
 }
+
+export const cancelAllScheduledNotifications = Notifications.cancelAllScheduledNotificationsAsync;

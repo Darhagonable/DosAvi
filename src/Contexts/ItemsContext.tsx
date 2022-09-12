@@ -1,13 +1,14 @@
 import { useState, useEffect, createContext, useContext, useMemo, ReactNode } from "react";
 import { useAsyncStorage } from "@react-native-async-storage/async-storage";
 import generateId from "../Utils/generateId";
-import { scheduleNotifications, cancelNotifications } from "Utils/notifications";
+import { scheduleNotifications, cancelNotifications, cancelAllScheduledNotifications } from "Utils/notifications";
 
 interface IItemsContext {
-  items: Medication[];
-  createItem: (item: Omit<Medication, "id" | "notificationIds">) => void;
-  updateItem: (item: Medication) => void;
-  deleteItem: (itemId: string) => void;
+  items: Medication[]
+  createItem: (item: Omit<Medication, "id" | "notificationIds">) => void
+  updateItem: (item: Medication) => void
+  deleteItem: (itemId: string) => void
+  deleteAllItems: () => void
 }
 
 const ItemsContext = createContext<IItemsContext>({} as IItemsContext);
@@ -69,11 +70,17 @@ export function ItemsProvider({children}: {children: ReactNode}) {
     writeToStorage(updatedItems);
   }
 
+  async function deleteAllItems() {
+    await cancelAllScheduledNotifications();
+    writeToStorage([]);
+  }
+
   const values = useMemo(() => ({
     items: itemsState,
     createItem,
     updateItem,
-    deleteItem
+    deleteItem,
+    deleteAllItems
   }), [itemsState]);
 
   return (

@@ -2,7 +2,7 @@ import { useMemo, useRef, useState } from "react";
 import { ScrollView, StyleSheet, Text, View, TextInput as TextInputType } from "react-native";
 import { useRoute, useNavigation, RouteProp } from "@react-navigation/native";
 import Header from "Components/Header";
-import { Avatar, Button, Card, Dialog, TextInput, Title, ToggleButton, TouchableRipple, useTheme } from "react-native-paper";
+import { Avatar, Button, Card, Dialog, Portal, TextInput, Title, ToggleButton, TouchableRipple, useTheme } from "react-native-paper";
 import DropDown from "react-native-paper-dropdown";
 import TimeInput from "Components/TimeInput";
 import NewTimeInput from "Components/NewTimeInput";
@@ -182,18 +182,20 @@ export default function Details() {
       </ScrollView>
 
       {!isNew && (
-        <Dialog visible={showRemoveDialog} onDismiss={() => setShowRemoveDialog(false)}>
-          <Dialog.Title>Are you sure you wanna remove this medication?</Dialog.Title>
-          <Dialog.Actions>
-            <Button onPress={() => setShowRemoveDialog(false)}>Cancel</Button>
-            <Button color={colors.secondary} onPress={() => {
-              deleteItem(medication.id);
-              navigation.goBack();
-            }}>
+        <Portal>
+          <Dialog visible={showRemoveDialog} onDismiss={() => setShowRemoveDialog(false)}>
+            <Dialog.Title>Are you sure you wanna remove this medication?</Dialog.Title>
+            <Dialog.Actions>
+              <Button onPress={() => setShowRemoveDialog(false)}>Cancel</Button>
+              <Button color={colors.secondary} onPress={() => {
+                deleteItem(medication.id);
+                navigation.goBack();
+              }}>
               Remove
-            </Button>
-          </Dialog.Actions>
-        </Dialog>
+              </Button>
+            </Dialog.Actions>
+          </Dialog>
+        </Portal>
       )}
 
       <Footer/>

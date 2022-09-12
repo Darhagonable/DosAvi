@@ -86,6 +86,7 @@ const styles = StyleSheet.create({
     overflow: "hidden"
   },
   progressbar: {
-    height: 11
+    height: 11,
+    bottom: -1
   }
 });

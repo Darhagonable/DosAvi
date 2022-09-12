@@ -32,6 +32,7 @@ export default function Header({title, hasBackButton, searchQuery, setSearchQuer
               value={searchQuery}
               style={{height: 40}}
               autoFocus
+              onBlur={() => !searchQuery && setShowSearchbar(false)}
             />
           </View>
         )
@@ -43,7 +44,7 @@ export default function Header({title, hasBackButton, searchQuery, setSearchQuer
         )
       }
       {hasSearchbar
-        ? <Appbar.Action icon="magnify" onPress={() => setShowSearchbar(!showSearchbar)}/>
+        ? <Appbar.Action icon="magnify" onPress={() => !searchQuery && setShowSearchbar(!showSearchbar)}/>
         : <Appbar.Action icon=""/>
       }
     </Appbar.Header>

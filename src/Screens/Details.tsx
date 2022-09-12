@@ -1,8 +1,8 @@
-import { useState } from "react";
-import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { useMemo, useRef, useState } from "react";
+import { ScrollView, StyleSheet, Text, View, TextInput as TextInputType } from "react-native";
 import { useRoute, useNavigation, RouteProp } from "@react-navigation/native";
 import Header from "Components/Header";
-import { Avatar, Button, Card, TextInput, Title, ToggleButton, TouchableRipple, useTheme } from "react-native-paper";
+import { Avatar, Button, Card, Dialog, TextInput, Title, ToggleButton, TouchableRipple, useTheme } from "react-native-paper";
 import DropDown from "react-native-paper-dropdown";
 import TimeInput from "Components/TimeInput";
 import NewTimeInput from "Components/NewTimeInput";
@@ -30,6 +30,8 @@ export default function Details() {
     times: []
   });
 
+  const ailmentInputRef = useRef<TextInputType>(null);
+
   const [showDropDown, setShowDropDown] = useState(false);
 
   const list: Array<{label: string, value: DaysPreset}> = [
@@ -39,6 +41,14 @@ export default function Details() {
     {label: "Weekends", value: "weekends"},
     {label: "Choose days", value: "custom"}
   ];
+
+  const validations = useMemo<Partial<Record<keyof Draft, boolean>>>(() => ({
+    name: !!draft.name,
+    affliction: !!draft.affliction,
+    times: !!draft.times.length
+  }), [draft]);
+
+  const [showRemoveDialog, setShowRemoveDialog] = useState(false);
 
   return (
     < >
@@ -56,10 +66,13 @@ export default function Details() {
                 mode="outlined"
                 value={draft.name}
                 onChangeText={newName => setDraft({...draft, name: newName})}
+                onSubmitEditing={() => ailmentInputRef.current?.focus()}
+                blurOnSubmit={false}
               />
 
               <TextInput
                 label="Ailment"
+                ref={ailmentInputRef}
                 placeholder="e.g. lung inflammation"
                 mode="outlined"
                 value={draft.affliction}
@@ -142,10 +155,13 @@ export default function Details() {
           </Card.Content>
           <Card.Actions style={{justifyContent: "flex-end"}}>
             <Button onPress={navigation.goBack}>Cancel</Button>
-            <Button onPress={() => {
-              isNew ? createItem(draft) : updateItem({...draft, id: medication.id, notificationIds: medication.notificationIds});
-              navigation.goBack();
-            }}>
+            <Button
+              onPress={() => {
+                isNew ? createItem(draft) : updateItem({...draft, id: medication.id, notificationIds: medication.notificationIds});
+                navigation.goBack();
+              }}
+              disabled={Object.values(validations).some(v => !v)}
+            >
               {isNew ? "Create" : "Update"}
             </Button>
           </Card.Actions>
@@ -153,10 +169,7 @@ export default function Details() {
 
         {!isNew && (
           <Card style={{marginTop: 24, overflow: "hidden"}}>
-            <TouchableRipple onPress={() => {
-              deleteItem(medication.id);
-              navigation.goBack();
-            }}>
+            <TouchableRipple onPress={() => setShowRemoveDialog(true)}>
               <Card.Title
                 title="Remove medication"
                 titleStyle={{fontSize: 16}}
@@ -166,6 +179,21 @@ export default function Details() {
           </Card>
         )}
       </ScrollView>
+
+      {!isNew && (
+        <Dialog visible={showRemoveDialog} onDismiss={() => setShowRemoveDialog(false)}>
+          <Dialog.Title>Are you sure you wanna remove this medication?</Dialog.Title>
+          <Dialog.Actions>
+            <Button onPress={() => setShowRemoveDialog(false)}>Cancel</Button>
+            <Button color={colors.secondary} onPress={() => {
+              deleteItem(medication.id);
+              navigation.goBack();
+            }}>
+              Remove
+            </Button>
+          </Dialog.Actions>
+        </Dialog>
+      )}
     </>
   );
 }

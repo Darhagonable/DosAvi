@@ -13,6 +13,18 @@ const friendlyDaysPresets = {
   "custom": "Choose days"
 };
 
+const days: Array<Day> = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+
+const timeStampSort = (a: Timestamp, b: Timestamp) => {
+  if (a.hours < b.hours) return -1;
+  if (a.hours > b.hours) return 1;
+
+  if (a.minutes < b.minutes) return -1;
+  if (a.minutes > b.minutes) return 1;
+
+  return 0;
+};
+
 function countdownconvert(duration: number) {
   const days = Math.floor(duration / (1000 * 60 * 60 * 24));
   const hours = Math.floor((duration % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
@@ -58,9 +70,9 @@ export default function ListItem({medication}: Props) {
         < >
           <Card.Content>
             <Title>{medication.name}</Title>
-            <Paragraph>Against {medication.affliction} • {medication.daysCustom?.map(day => day.slice(0, 3)).join(", ") ?? friendlyDaysPresets[medication.daysPreset]}</Paragraph>
+            <Paragraph>Against {medication.affliction} • {medication.daysCustom?.sort((a, b) => days.indexOf(a) - days.indexOf(b)).map(day => day.slice(0, 3)).join(", ") ?? friendlyDaysPresets[medication.daysPreset]}</Paragraph>
             <Paragraph>
-              {medication.times.map((timestamp, index) => (
+              {medication.times.sort(timeStampSort).map((timestamp, index) => (
                 <Fragment key={timestamp.id}>
                   {displayTime(timestamp)}
                   {index + 1 !== medication.times.length && " • "}

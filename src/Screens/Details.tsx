@@ -69,6 +69,7 @@ export default function Details() {
                 onChangeText={newName => setDraft({...draft, name: newName})}
                 onSubmitEditing={() => ailmentInputRef.current?.focus()}
                 blurOnSubmit={false}
+                returnKeyType="next"
               />
 
               <TextInput

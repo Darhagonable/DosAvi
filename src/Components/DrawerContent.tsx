@@ -66,8 +66,8 @@ export default function DrawerContent() {
         </List.Accordion>
       </DrawerContentScrollView>
 
-      <Portal>
-        <Dialog visible={showRemoveDialog} onDismiss={() => setShowRemoveDialog(false)}>
+      {showRemoveDialog && <Portal>
+        <Dialog visible onDismiss={() => setShowRemoveDialog(false)}>
           <Dialog.Title>Are you sure you wanna remove all medications?</Dialog.Title>
           <Dialog.Actions>
             <Button onPress={() => setShowRemoveDialog(false)}>
@@ -78,7 +78,7 @@ export default function DrawerContent() {
             </Button>
           </Dialog.Actions>
         </Dialog>
-      </Portal>
+      </Portal>}
     </>
   );
 }

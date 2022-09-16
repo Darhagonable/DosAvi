@@ -1,6 +1,6 @@
 import { ThemeContextConsumer, ThemeContextProvider } from "Contexts/themeContext";
 import { registerRootComponent } from "expo";
-import React from "react";
+import React, { useEffect } from "react";
 import App from "./App";
 import * as Notifications from "expo-notifications";
 
@@ -52,7 +52,18 @@ Notifications.setNotificationHandler({
   })
 });
 
+async function requestNotificationsPermissionsAsync() {
+  const { granted } = await Notifications.getPermissionsAsync();
+  if(!granted)
+    await Notifications.requestPermissionsAsync();
+}
+
 function AppWrapper() {
+
+  useEffect(() => {
+    requestNotificationsPermissionsAsync();
+  }, []);
+
   return (
     <ThemeContextProvider>
       <ThemeContextConsumer>

@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { SafeAreaView, Platform } from "react-native";
+import { Platform } from "react-native";
 import { StatusBar, setStatusBarStyle } from "expo-status-bar";
 import * as NavigationBar from "expo-navigation-bar";
 import Router from "Router";
@@ -27,11 +27,11 @@ export default function App() {
   }, [mode]);
 
   return (
-    <SafeAreaView style={{flex: 1, backgroundColor: colors.surface}}>
+    < >
       <StatusBar/>
       <Drawer.Navigator drawerContent={() => <DrawerContent/>} screenOptions={{headerShown: false}}>
         <Drawer.Screen name="Router" component={Router}/>
       </Drawer.Navigator>
-    </SafeAreaView>
+    </>
   );
 }

@@ -1,7 +1,7 @@
 import { useEffect } from "react";
-import { StyleSheet, SafeAreaView } from "react-native";
+import { SafeAreaView, Platform } from "react-native";
 import { StatusBar, setStatusBarStyle } from "expo-status-bar";
-import { setBackgroundColorAsync, setButtonStyleAsync } from "expo-navigation-bar";
+import * as NavigationBar from "expo-navigation-bar";
 import Router from "Router";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import DrawerContent from "Components/DrawerContent";
@@ -19,13 +19,15 @@ export default function App() {
   const { colors } = useTheme();
 
   useEffect(() => {
-    setBackgroundColorAsync(colors.surface);
-    setButtonStyleAsync(inverseMode[mode]);
+    if(Platform.OS === "android") {
+      NavigationBar.setBackgroundColorAsync(colors.surface);
+      NavigationBar.setButtonStyleAsync(inverseMode[mode]);
+    }
     setStatusBarStyle(inverseMode[mode]);
   }, [mode]);
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={{flex: 1, backgroundColor: colors.surface}}>
       <StatusBar/>
       <Drawer.Navigator drawerContent={() => <DrawerContent/>} screenOptions={{headerShown: false}}>
         <Drawer.Screen name="Router" component={Router}/>
@@ -33,9 +35,3 @@ export default function App() {
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1
-  }
-});

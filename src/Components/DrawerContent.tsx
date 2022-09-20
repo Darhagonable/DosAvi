@@ -73,7 +73,10 @@ export default function DrawerContent() {
             <Button onPress={() => setShowRemoveDialog(false)}>
               Cancel
             </Button>
-            <Button color={colors.secondary} onPress={deleteAllItems}>
+            <Button color={colors.secondary} onPress={() => {
+              deleteAllItems();
+              setShowRemoveDialog(false);
+            }}>
               Remove
             </Button>
           </Dialog.Actions>

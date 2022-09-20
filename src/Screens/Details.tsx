@@ -62,7 +62,7 @@ export default function Details() {
               <Title>{isNew ? "Add a new medication" : "Edit medication details"}</Title>
 
               <TextInput
-                label="Name"
+                label="Name*"
                 placeholder="e.g. penicillin"
                 mode="outlined"
                 value={draft.name}
@@ -73,7 +73,7 @@ export default function Details() {
               />
 
               <TextInput
-                label="Ailment"
+                label="Ailment*"
                 ref={ailmentInputRef}
                 placeholder="e.g. lung inflammation"
                 mode="outlined"
